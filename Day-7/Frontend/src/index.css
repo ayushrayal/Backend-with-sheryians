@@ -1,0 +1,36 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+html, body, #root{
+    height: 100%;
+    width: 100%;
+    font-family: 'Poppins', sans-serif;
+}
+
+html{
+    background: #333;
+}
+
+.notes{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    padding: 20px;
+    max-width: 100%;
+}
+.note{
+    max-width: 300px !important;
+    flex-shrink: 0;
+    background: #242323;
+    padding: 20px;
+    border-radius: 10px;
+}
+.note h2{
+    color: #fff;
+    margin-bottom: 10px;
+}
+.note p{
+    color: #7e7878;
+}
