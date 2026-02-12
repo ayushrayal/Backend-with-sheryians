@@ -1,45 +1,60 @@
 import axios from "axios"
-import { useState } from "react"
+import { useState, useEffect} from "react"
 
 const App = () => {
-  const [notes, setNotes] = useState([{
-    Title:"Note 1",
-    Description:"This is the description of note 1"
-  },
-  {
-    Title:"Note 2",
-    Description:"This is the description of note 2"
-  },
-  {
-    Title:"Note 3",
-    Description:"This is the description of note 3"
-  },
-  {
-    Title:"Note 4",
-    Description:"This is the description of note 4"
-  },
-  {
-    Title:"Note 5",
-    Description:"This is the description of note 5"
-  },
-  {
-    Title:"Note 6",
-    Description:"This is the description of note 6"
-  }
-  ]);
+  const [notes, setNotes] = useState([]);
 
-  axios.get("http://localhost:5000/api/notes")
+  function fetchnotes(){
+    axios.get("http://localhost:3000/api/notes")
   .then((res)=>{
-    console.log(res.data);
+    setNotes(res.data.notes)
   })
+  }
+  useEffect(()=>{
+    fetchnotes()
+  },[])
+
+  function handleSubmit(e){
+    e.preventDefault()
+    const {Title, Description} = e.target.elements
+    console.log(Title.value,Description.value);
+    axios.post("http://localhost:3000/api/notes",{
+      Title:Title.value,
+      Description:Description.value})
+      .then((res)=>{
+        console.log(res.data);
+        fetchnotes()
+      })
+  }
+
+  function DeleteNote(NoteId){
+    axios.delete('http://localhost:3000/api/notes/'+NoteId)
+    .then(res=>{
+      console.log(res.data);
+      fetchnotes()
+    })
+  }
   return (
     <>
+    <div className="form-box" onSubmit={handleSubmit}>
+      <form className="notes-create-form">
+        <input type="text" placeholder="Enter Your Title" name="Title" />
+        <input type="text" placeholder="Enter Your Description" name="Description" />
+        <button>Submit</button>
+      </form>
+    </div>
     <div className="notes">
      {
       notes.map((note, index) => {
        return <div className="note" key={index}>
        <h2>{note.Title}</h2>
       <p>{note.Description}</p>
+    <div className="btnbox">
+      <button onClick={()=>{
+        DeleteNote(note._id)
+      }}>Delete</button>
+      <button>Update</button>
+      </div>
      </div>
       })}
     </div>

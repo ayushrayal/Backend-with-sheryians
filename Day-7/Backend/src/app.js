@@ -1,6 +1,8 @@
 const express = require('express');
+const cors = require('cors');
 const noteModel = require("./models/task.model");
 const app = express();
+app.use(cors());
 app.use(express.json());
 
 /*
