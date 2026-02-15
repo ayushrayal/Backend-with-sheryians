@@ -70,3 +70,9 @@ button:active{
     display: flex;
     gap: 1rem;
 }
+.editbox{
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}

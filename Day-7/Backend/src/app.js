@@ -1,10 +1,11 @@
 const express = require('express');
 const cors = require('cors');
+const path = require('path');
 const noteModel = require("./models/task.model");
 const app = express();
 app.use(cors());
 app.use(express.json());
-
+app.use(express.static("./public"));
 /*
 * - Post /api/notes
 * - Create a new note with the provided Title and Description in the req.body.
@@ -39,7 +40,8 @@ app.get("/api/notes", async (req,res)=>{
 /*
 * - Delete /api/notes/:id
 * - Delete the note with the specified ID from the req.params.id.
-*/app.delete("/api/notes/:id", async (req,res)=>{
+*/
+app.delete("/api/notes/:id", async (req,res)=>{
     const id = req.params.id;
     await noteModel.findByIdAndDelete(id);
     res.status(200).json({
@@ -54,10 +56,15 @@ app.get("/api/notes", async (req,res)=>{
 */
 app.patch("/api/notes/:id", async (req,res)=>{
     const id = req.params.id;
-    const { Description } = req.body;
-    await noteModel.findByIdAndUpdate(id,{Description});
+    const { Title, Description } = req.body;
+    await noteModel.findByIdAndUpdate(id,{Title, Description});
     res.status(200).json({
         message:"Notes Updated successfully."
     })
 })
+
+app.use("*name", (req,res)=>{
+    res.sendFile(path.join(__dirname, "..","/public/index.html"));
+})
+
 module.exports = app
