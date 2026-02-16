@@ -8,7 +8,7 @@ const App = () => {
   const [updatedDesc, setUpdatedDesc] = useState("");
 
   function fetchnotes(){
-    axios.get("http://localhost:3000/api/notes")
+    axios.get("https://backend-with-sheryians-1.onrender.com/api/notes")
     .then((res)=>{
       setNotes(res.data.notes)
     })
@@ -22,7 +22,7 @@ const App = () => {
     e.preventDefault()
     const {Title, Description} = e.target.elements
 
-    axios.post("http://localhost:3000/api/notes",{
+    axios.post("https://backend-with-sheryians-1.onrender.com/api/notes",{
       Title:Title.value,
       Description:Description.value
     })
@@ -32,7 +32,7 @@ const App = () => {
   }
 
   function DeleteNote(NoteId){
-    axios.delete('http://localhost:3000/api/notes/'+NoteId)
+    axios.delete('https://backend-with-sheryians-1.onrender.com/api/notes/'+NoteId)
     .then(()=>{
       fetchnotes()
     })
@@ -40,7 +40,7 @@ const App = () => {
 
   // 🔥 UPDATE FUNCTION
   function handleUpdate(id){
-    axios.patch("http://localhost:3000/api/notes/"+id,{
+    axios.patch("https://backend-with-sheryians-1.onrender.com/api/notes/"+id,{
       Description: updatedDesc,
       Title: updatedTitle
     })
