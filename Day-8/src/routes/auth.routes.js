@@ -19,7 +19,8 @@ authRouter.post("/signup",async (req,res)=>{
         id:user._id,
         email:user.email,
     },
-    process.env.JWT_KEY,)
+    process.env.JWT_KEY,);
+    res.cookie("token",token)
     res.status(201).json({
         message:"User Created Successfully",
         user,
