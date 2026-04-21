@@ -1,0 +1,369 @@
+[REST API NOTES - IN-DEPTH & EASY GUIDE]
+
+================================================================================
+1. WHAT IS A REST API?
+================================================================================
+
+REST stands for Representational State Transfer.
+It is an architectural style for building APIs using HTTP.
+
+A REST API exposes data as resources and allows clients to operate on those resources using standard HTTP methods.
+
+Why REST is useful:
+- It uses HTTP, which works everywhere (web, mobile, IoT).
+- It is simple and easy to understand.
+- It is language-agnostic: any client can call it.
+- It supports multiple representations, such as JSON and XML.
+
+================================================================================
+2. CORE PRINCIPLES OF REST
+================================================================================
+
+1. Resource-Based
+- Everything is a resource: users, orders, products, posts.
+- Use nouns in URLs, not verbs.
+  Good: `/users/123`
+  Bad: `/getUser?id=123`
+
+2. Uniform Interface
+- Use standard HTTP methods for actions.
+- Keep URLs consistent.
+- Use proper status codes.
+
+3. Statelessness
+- The server does not store session state between requests.
+- Each request must include all information needed to process it.
+- Example: send authentication token with every request.
+
+4. Cacheable
+- Responses should declare whether they can be cached.
+- Cacheable responses improve performance and reduce server load.
+
+5. Layered System
+- The API can have multiple layers: proxies, gateways, and servers.
+- Each layer should behave independently.
+
+6. Code on Demand (optional)
+- The server can send executable code to the client.
+- This is rarely used in modern public APIs.
+
+================================================================================
+3. HTTP METHODS AND CRUD MAPPING
+================================================================================
+
+REST uses standard HTTP methods to map CRUD operations.
+
+- GET    → Read a resource.
+- POST   → Create a resource.
+- PUT    → Replace an entire resource.
+- PATCH  → Update part of a resource.
+- DELETE → Remove a resource.
+
+Method details:
+
+GET
+- Safe: does not change server state.
+- Idempotent: repeated calls have the same effect.
+- Use for fetching resources.
+
+POST
+- Creates a new resource.
+- Not idempotent: repeated calls usually create multiple resources.
+
+PUT
+- Replaces the entire resource with the provided data.
+- Idempotent: repeated calls produce the same result.
+
+PATCH
+- Updates only specific fields.
+- Not always idempotent, depending on the operation.
+
+DELETE
+- Removes a resource.
+- Idempotent: deleting the same resource twice usually has the same effect.
+
+================================================================================
+4. RESOURCE URL DESIGN
+================================================================================
+
+Good REST URLs are easy to read and predict.
+
+Rules:
+- Use plural nouns for collections: `/users`, `/products`.
+- Keep URLs simple and hierarchical.
+- Use nested routes for related resources.
+
+Examples:
+- `/users`          → User collection
+- `/users/123`      → Specific user
+- `/users/123/orders` → Orders for user 123
+- `/orders/456/items` → Items in order 456
+
+Avoid verbs in URLs:
+- Bad: `/getUsers`, `/createOrder`
+- Good: `/users`, `/orders`
+
+================================================================================
+5. QUERY PARAMETERS, FILTERING, SORTING, PAGINATION
+================================================================================
+
+Use query parameters to modify the result set.
+
+Filtering:
+- `/users?role=admin`
+- `/products?category=shoes&status=available`
+
+Sorting:
+- `/users?sort=name`
+- `/users?sort=-createdAt` (descending)
+
+Pagination:
+- `/users?page=1&limit=20`
+- `/users?offset=20&limit=20`
+- `/users?cursor=abc123&limit=20`
+
+Searching:
+- `/products?search=running%20shoes`
+
+Combining parameters:
+- `/users?role=admin&status=active&page=2&limit=10`
+
+================================================================================
+6. HTTP STATUS CODES
+================================================================================
+
+Use status codes to tell the client what happened.
+
+Success responses:
+- 200 OK: Request succeeded.
+- 201 Created: Resource created successfully.
+- 204 No Content: Success with no response body.
+- 206 Partial Content: Partial response, often for pagination.
+
+Client errors:
+- 400 Bad Request: Invalid request format or parameters.
+- 401 Unauthorized: Missing or invalid authentication.
+- 403 Forbidden: Authenticated but not allowed.
+- 404 Not Found: Resource does not exist.
+- 409 Conflict: Request conflicts with current state.
+- 422 Unprocessable Entity: Validation failed.
+
+Server errors:
+- 500 Internal Server Error: Unexpected server error.
+- 502 Bad Gateway: Invalid response from upstream server.
+- 503 Service Unavailable: Server temporarily unavailable.
+- 504 Gateway Timeout: Upstream server timed out.
+
+================================================================================
+7. REQUEST AND RESPONSE FORMATS
+================================================================================
+
+Content type:
+- Use `Content-Type: application/json` for JSON payloads.
+- Use `Accept: application/json` to request JSON responses.
+
+JSON request example:
+```json
+{
+  "name": "Alice",
+  "email": "alice@example.com"
+}
+```
+
+JSON response example:
+```json
+{
+  "success": true,
+  "data": {
+    "id": 123,
+    "name": "Alice",
+    "email": "alice@example.com"
+  }
+}
+```
+
+Error response example:
+```json
+{
+  "success": false,
+  "error": {
+    "code": "USER_NOT_FOUND",
+    "message": "User with id 123 was not found"
+  }
+}
+```
+
+================================================================================
+8. VALIDATION AND ERROR HANDLING
+================================================================================
+
+Validation:
+- Validate request body fields.
+- Check required fields and data types.
+- Return clear error messages.
+
+Example validation error:
+- `email` must be a valid email address.
+- `password` must be at least 8 characters.
+
+Error handling best practices:
+- Use consistent error structure.
+- Include a helpful message and error code.
+- Avoid exposing internal details.
+- Log the error on the server side.
+
+Example error response:
+```json
+{
+  "success": false,
+  "error": {
+    "code": "INVALID_INPUT",
+    "message": "Email is required",
+    "details": [{ "field": "email", "message": "Email cannot be blank" }]
+  }
+}
+```
+
+================================================================================
+9. AUTHENTICATION AND AUTHORIZATION
+================================================================================
+
+Authentication verifies who the user is.
+Authorization decides what the user can do.
+
+Common authentication methods:
+- API keys
+- Bearer tokens (JWT)
+- OAuth 2.0
+- Session cookies
+
+Example JWT header:
+`Authorization: Bearer eyJhbGci...`
+
+Role-based authorization example:
+- `admin` can delete users.
+- `user` can update own profile.
+
+================================================================================
+10. VERSIONING YOUR API
+================================================================================
+
+Why version APIs?
+- Add new features without breaking old clients.
+- Maintain backward compatibility.
+
+Common versioning methods:
+- URL versioning: `/api/v1/users`
+- Header versioning: `Accept: application/vnd.app.v1+json`
+- Query versioning: `/api/users?version=1`
+
+Best practice:
+- Start with `/api/v1/`
+- Keep old versions available while clients migrate.
+
+================================================================================
+11. SECURITY BEST PRACTICES
+================================================================================
+
+Protect your REST API:
+- Use HTTPS everywhere.
+- Validate all input.
+- Sanitize user-provided data.
+- Use rate limiting to prevent abuse.
+- Guard against SQL injection and XSS.
+- Require authentication on protected routes.
+
+Headers to add:
+- `Strict-Transport-Security`
+- `X-Content-Type-Options: nosniff`
+- `X-Frame-Options: DENY`
+
+================================================================================
+12. EXAMPLE REST API IMPLEMENTATION (EASY)
+================================================================================
+
+Node.js + Express example:
+```javascript
+const express = require('express');
+const app = express();
+app.use(express.json());
+
+let users = [
+  { id: 1, name: 'Alice', email: 'alice@example.com' },
+  { id: 2, name: 'Bob', email: 'bob@example.com' }
+];
+
+app.get('/api/users', (req, res) => {
+  res.status(200).json({ success: true, data: users });
+});
+
+app.get('/api/users/:id', (req, res) => {
+  const user = users.find(u => u.id === Number(req.params.id));
+  if (!user) {
+    return res.status(404).json({ success: false, error: { code: 'USER_NOT_FOUND', message: 'User not found' } });
+  }
+  res.json({ success: true, data: user });
+});
+
+app.post('/api/users', (req, res) => {
+  const { name, email } = req.body;
+  if (!name || !email) {
+    return res.status(400).json({ success: false, error: { code: 'INVALID_INPUT', message: 'Name and email are required' } });
+  }
+
+  const newUser = { id: users.length + 1, name, email };
+  users.push(newUser);
+  res.status(201).json({ success: true, data: newUser });
+});
+
+app.patch('/api/users/:id', (req, res) => {
+  const user = users.find(u => u.id === Number(req.params.id));
+  if (!user) return res.status(404).json({ success: false, error: { code: 'USER_NOT_FOUND', message: 'User not found' } });
+
+  const { name, email } = req.body;
+  if (name) user.name = name;
+  if (email) user.email = email;
+  res.json({ success: true, data: user });
+});
+
+app.delete('/api/users/:id', (req, res) => {
+  const index = users.findIndex(u => u.id === Number(req.params.id));
+  if (index === -1) return res.status(404).json({ success: false, error: { code: 'USER_NOT_FOUND', message: 'User not found' } });
+
+  users.splice(index, 1);
+  res.status(204).send();
+});
+
+app.listen(3000, () => console.log('Server running on port 3000'));
+```
+
+================================================================================
+13. REST API BEST PRACTICES SUMMARY
+================================================================================
+
+- Use consistent, resource-based URLs.
+- Use proper HTTP methods and status codes.
+- Keep the API stateless.
+- Validate input and return clear error messages.
+- Version your API.
+- Secure it with HTTPS, auth, and rate limiting.
+- Document your endpoints with OpenAPI/Swagger.
+
+================================================================================
+14. QUICK TERMS
+================================================================================
+
+- Resource: A thing you can access via the API.
+- Endpoint: A specific URL for a resource.
+- HTTP Method: Action to perform (GET, POST, PUT, DELETE).
+- Status Code: Result of the request.
+- Payload: Data sent or received in the request/response.
+
+================================================================================
+RESOURCES
+================================================================================
+
+- RESTful API Tutorial: https://restfulapi.net/
+- OpenAPI / Swagger: https://swagger.io/
+- HTTP Status Codes: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status
+- Express.js: https://expressjs.com/
