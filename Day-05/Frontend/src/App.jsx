@@ -19,9 +19,20 @@ const App = () => {
   .then((res)=>{
     setNotes(res.data.notes);
   })
+
+  const addNote = async(title,description)=>{
+    axios.post("http://localhost:3000/api/notes",{
+      title,
+      description
+    })
+    .then((res)=>{
+      setNotes([...notes, res.data.note]);
+      setShowModel(false);
+    })
+  }
   return (
     <div className='main'><AddButton setShowModel = {setShowModel}/>
-    {showModel && <NoteModel setShowModel = {setShowModel} setNotes={setNotes}/>}
+    {showModel && <NoteModel setShowModel = {setShowModel} setNotes={setNotes} addNote={addNote}/>}
     <NoteList notes={notes}/>
     </div>
   )

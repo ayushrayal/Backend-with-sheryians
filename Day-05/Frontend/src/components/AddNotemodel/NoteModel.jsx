@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import '../AddNotemodel/NoteModel.css'
-const NoteModel = (props) => {
+const NoteModel = ({ setShowModel, setNotes, addNote }) => {
   const [title,settitle] = useState("");
   const [description,setdescription] = useState("");
   return (
@@ -17,9 +17,8 @@ const NoteModel = (props) => {
           
         }}></textarea>
         <footer><button onClick={()=>{
-          props.setShowModel(false)
-        }}>Cancel</button>
-        <button>Save</button></footer>
+          addNote(title, description);
+        }}>Save</button></footer>
     </div>
   )
 }
