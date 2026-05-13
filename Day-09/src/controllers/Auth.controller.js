@@ -1,0 +1,87 @@
+const crypto = require("crypto")
+const jwt = require("jsonwebtoken")
+const userModel = require("../models/User.model");
+
+async function registerUser(req, res) {
+    const { username, email, password, bio, profileimage } = req.body;
+    const isUserExist = await userModel.findOne({
+        $or: [
+            { email },
+            { username }
+        ]
+    });
+    if (isUserExist) {
+        return res.status(409).json({
+            message: "User Already Exists!" + (isUserExist.email === email ? "Email Already Exists!" : "Username Already Exists!")
+        })
+    }
+    const hashedPassword = crypto.createHash("md5").update(password).digest("hex");
+    const user = await userModel.create({
+        username, email, password: hashedPassword, bio, profileimage
+    })
+    const TOKEN = jwt.sign({
+        id: user._id,
+        email: user.email
+    }
+        ,
+        process.env.JWT_TOKEN,
+        {
+            expiresIn: "1d"
+        })
+    res.cookie("TOKEN",TOKEN);
+    res.status(201).json({
+        message:"User Created Successfully!",
+        TOKEN,
+        user
+    })
+}
+
+async function loginUser(req, res) {
+
+    const { identifier, password } = req.body;
+
+    const user = await userModel.findOne({
+        $or: [
+            { email: identifier },
+            { username: identifier }
+        ]
+    });
+
+    if (!user) {
+        return res.status(404).json({
+            message: "User Not Found!"
+        });
+    }
+
+    const isPasswordCorrect =
+        user.password ===
+        crypto.createHash("md5").update(password).digest("hex");
+
+    if (!isPasswordCorrect) {
+        return res.status(401).json({
+            message: "Password is Incorrect!"
+        });
+    }
+
+    const TOKEN = jwt.sign(
+        {
+            id: user._id,
+            email: user.email
+        },
+        process.env.JWT_TOKEN,
+        {
+            expiresIn: "1d"
+        }
+    );
+
+    res.cookie("TOKEN", TOKEN);
+
+    res.status(200).json({
+        message: "Login Successfully!",
+        TOKEN,
+        user
+    });
+
+}
+
+module.exports = { registerUser, loginUser }

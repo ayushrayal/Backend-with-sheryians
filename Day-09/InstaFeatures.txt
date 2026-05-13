@@ -1,0 +1,13 @@
+Insta Clone Features
+  =>Authentication 
+     ->Register
+     ->Login
+     ->logout (Token Blacklisting)
+  =>Post
+     ->Post Create
+     ->You can see in feed
+     ->Likes (Collection Type)
+     ->Saved Post
+  =>User
+     ->Following
+     ->Followers
