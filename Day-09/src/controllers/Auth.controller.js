@@ -1,5 +1,5 @@
-const crypto = require("crypto")
-const jwt = require("jsonwebtoken")
+const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
 const userModel = require("../models/User.model");
 
 async function registerUser(req, res) {
@@ -15,7 +15,7 @@ async function registerUser(req, res) {
             message: "User Already Exists!" + (isUserExist.email === email ? "Email Already Exists!" : "Username Already Exists!")
         })
     }
-    const hashedPassword = crypto.createHash("md5").update(password).digest("hex");
+    const hashedPassword = await bcrypt.hash(password, 10);
     const user = await userModel.create({
         username, email, password: hashedPassword, bio, profileimage
     })
@@ -53,9 +53,7 @@ async function loginUser(req, res) {
         });
     }
 
-    const isPasswordCorrect =
-        user.password ===
-        crypto.createHash("md5").update(password).digest("hex");
+    const isPasswordCorrect = await bcrypt.compare(password, user.password);
 
     if (!isPasswordCorrect) {
         return res.status(401).json({
