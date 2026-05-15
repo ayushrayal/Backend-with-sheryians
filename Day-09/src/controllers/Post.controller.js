@@ -8,7 +8,6 @@ const imageKit = new ImageKit({
 async function PostCreateController(req, res) {
 
     try {
-
         const { TOKEN } = req.cookies;
 
         if (!TOKEN) {
