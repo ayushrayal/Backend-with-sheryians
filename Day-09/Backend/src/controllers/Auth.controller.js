@@ -17,11 +17,11 @@ async function registerUser(req, res) {
     }
     const hashedPassword = await bcrypt.hash(password, 10);
     const user = await userModel.create({
-        username, email, password: hashedPassword, bio, profileimage
+        username, email, password: hashedPassword, bio, profileimage 
     })
     const TOKEN = jwt.sign({
         id: user._id,
-        email: user.email
+        username: user.username,
     }
         ,
         process.env.JWT_TOKEN,
@@ -64,7 +64,7 @@ async function loginUser(req, res) {
     const TOKEN = jwt.sign(
         {
             id: user._id,
-            email: user.email
+            username: user.username,
         },
         process.env.JWT_TOKEN,
         {
@@ -82,4 +82,30 @@ async function loginUser(req, res) {
 
 }
 
-module.exports = { registerUser, loginUser }
+async function PrivateRoute(req, res) {
+console.log(req.user);
+console.log(req.user.id);
+    const userId = req.user.id;
+
+    const user = await userModel.findById(userId);
+
+    if (!user) {
+        return res.status(404).json({
+            message: "User not found!"
+        });
+    }
+
+    // toggle
+    user.isPrivate = !user.isPrivate;
+
+    await user.save();
+
+    return res.status(200).json({
+        message: user.isPrivate
+            ? "Your account is private now!"
+            : "Your account is public now!",
+        isPrivate: user.isPrivate
+    });
+}
+
+module.exports = { registerUser, loginUser, PrivateRoute}

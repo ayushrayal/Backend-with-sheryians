@@ -19,6 +19,10 @@ const userSchema = new mongoose.Schema({
     Profile_Image:{
         type:String,
         default:"https://ik.imagekit.io/ayushrayal/Default.webp?updatedAt=1778609836107",
+    },
+    isPrivate:{
+        type:Boolean,
+        default:false
     }
 })
 
