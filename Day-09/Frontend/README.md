@@ -1,16 +1,56 @@
-# React + Vite
+# Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This frontend is built with React and Vite for the Day-09 project. It provides the authentication UI for login and registration and connects to the backend API at `http://localhost:3000`.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- React + Vite application
+- Login page with username/email and password
+- Registration page with username, email, and password
+- Axios requests to backend auth endpoints
+- React Router v7 for client-side routing
+- Sass styling support
 
-## React Compiler
+## Prerequisites
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- Node.js 18+ (or compatible)
+- npm installed
+- Backend server running on `http://localhost:3000`
 
-## Expanding the ESLint configuration
+## Setup
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+1. Open the `Frontend` directory.
+2. Install dependencies:
+
+```bash
+npm install
+```
+
+3. Start the development server:
+
+```bash
+npm run dev
+```
+
+4. Open the app in your browser at the URL shown by Vite.
+
+## Available scripts
+
+- `npm run dev` - start the Vite development server
+- `npm run build` - build the production bundle
+- `npm run lint` - run ESLint on the project files
+- `npm run preview` - preview the production build locally
+
+## Project structure
+
+- `src/App.jsx` - application root
+- `src/AppRoutes.jsx` - router and route definitions
+- `src/features/auth/pages/Login.jsx` - login form
+- `src/features/auth/pages/Register.jsx` - register form
+- `src/style.scss` - global styles
+
+## Notes
+
+- The login form sends a POST request to `/api/auth/login`.
+- The registration form sends a POST request to `/api/auth/register`.
+- Both forms use `withCredentials: true` to support cookies from the backend.
