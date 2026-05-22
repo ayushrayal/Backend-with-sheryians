@@ -83,8 +83,7 @@ async function loginUser(req, res) {
 }
 
 async function PrivateRoute(req, res) {
-console.log(req.user);
-console.log(req.user.id);
+
     const userId = req.user.id;
 
     const user = await userModel.findById(userId);
@@ -107,5 +106,24 @@ console.log(req.user.id);
         isPrivate: user.isPrivate
     });
 }
-
-module.exports = { registerUser, loginUser, PrivateRoute}
+async function getMe(req,res) {
+    const user = req.user.id
+    if(!user){
+        return res.status(401).json({
+    success: false,
+    message: "User not authenticated"
+})
+    }
+    const userData = await userModel.findById(user);
+    res.status(200).json({
+        message:"You Id",
+        user:{
+            username: userData.username,
+            email: userData.email,
+            isPrivate:userData.isPrivate,
+            bio:userData.bio,
+            profileimage:userData.profileimage 
+        }
+    })
+}
+module.exports = { registerUser, loginUser, PrivateRoute, getMe }
