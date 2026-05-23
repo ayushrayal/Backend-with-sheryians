@@ -5,8 +5,8 @@ async function likeController(req, res) {
     try {
 
         const username = req.user.username;
-        const postID = req.params.postID;
-
+        const { postID } = req.params;
+        console.log("Post ID:", postID);
         // Check post exists
         const isPostExists = await postModel.findById(postID);
 
@@ -34,6 +34,9 @@ async function likeController(req, res) {
             postID
         });
 
+        const totalLikes = await likeModel.countDocuments({ postID });
+        await postModel.findByIdAndUpdate(postID, { likesCount: totalLikes });
+
         res.status(200).json({
             message: "Post liked successfully!",
             like
@@ -48,7 +51,5 @@ async function likeController(req, res) {
 
     }
 }
-async function unlikeController(req, res) {
-    
-}
-module.exports = likeController;
+
+module.exports = {likeController};

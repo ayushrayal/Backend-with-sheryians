@@ -9,7 +9,7 @@ const Login = () => {
       const {handleLogin,loading} = useAuth()
       const navgigate = useNavigate()
        if(loading){
-          return (<h1>Loading...</h1>)
+          return (<main><h1>Loading...</h1></main>)
         }
       async function handleSubmit(e) {
         e.preventDefault();

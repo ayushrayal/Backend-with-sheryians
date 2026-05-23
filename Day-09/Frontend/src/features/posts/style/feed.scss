@@ -1,0 +1,105 @@
+.feed-page {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    background-color: #121212;
+    color: #e4d1d1;
+
+    .feed {
+        max-width: 400px;
+        width: 100%;
+        background-color: #1c1a1a;
+        padding: 1rem;
+        height: 100vh;
+        overflow-y: auto;
+
+        &::-webkit-scrollbar {
+            display: none;
+        }
+
+        .posts {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+
+            .post {
+                margin-top: 1rem;
+                width: 100%;
+                background-color: #2c2a2a;
+                padding: 1rem;
+                border-radius: 0.5rem;
+                .user-info {
+                    display: flex;
+                    gap: 0.5rem;
+                    align-items: center;
+                    margin-bottom: 0.5rem;
+                    .img-container {
+                        background: conic-gradient(#e01fdd, #f6a925, #e01fdd);
+                        border-radius: 50%;
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        border: 2px solid #1c1a1a00;
+                        img {
+                            width: 3rem;
+                            aspect-ratio: 1/1;
+                            border-radius: 50%;
+                            object-fit: cover;
+                        }
+                    }
+
+                    .username {
+                        font-weight: bold;
+                    }
+                }
+
+                .post-content {
+                    width: 100%;
+                    aspect-ratio: 1/1;
+                    margin-bottom: 0.5rem;
+                    img {
+                        width: 100%;
+                        object-fit: cover;
+                        border-radius: 0.5rem;
+                    }
+                }
+
+                .bottom-section {
+                    width: 100%;
+                    display: flex;
+                    justify-content: space-between;
+
+                    .left {
+                        display: flex;
+                        gap: 0.5rem;
+                        align-items: center;
+                    }
+
+                    .right {
+                        display: flex;
+                        align-items: center;
+                    }
+
+                    button {
+                        border: none;
+                        background-color: transparent;
+                        display: flex;
+                        align-items: center;
+                        gap: 0.25rem;
+                        font-size: 1rem;
+                        color: white;
+                        svg {
+                            width: 1.5rem;
+                            color: #ffffff;
+                        }
+                    }
+                    .like {
+                        color: #e01fdd;
+                    }
+                }
+            }
+        }
+    }
+}

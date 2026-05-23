@@ -32,7 +32,7 @@ export function AuthProvider({ children }) {
         setLoading(true);
         try{
             const response = await getme()
-            return response
+            setUser(response.user)
         }catch(err){
             throw err
         }finally{

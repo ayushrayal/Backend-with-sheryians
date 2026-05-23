@@ -13,7 +13,11 @@ const postSchema = new mongoose.Schema({
         ref:"Users",
         type:mongoose.Schema.Types.ObjectId,
         require:[true,"User ID is required!"]
-    }
+    },
+    likesCount:{
+        type:Number,
+        default:0
+    },
 })
 
 const postModel = mongoose.model("Posts",postSchema);

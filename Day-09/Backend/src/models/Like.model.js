@@ -3,11 +3,11 @@ const mongoose = require('mongoose');
 const likeSchema = new mongoose.Schema({
     username: {
         type: String,
-        unique: [true,"username is required!"]
+        required: [true,"username is required!"]
     },
     postID: {
         type: mongoose.Schema.Types.ObjectId,
-        unique: [true,"postID is required!"],
+        required: [true,"postID is required!"],
         ref:"Posts"
     }
 }, { timestamps: true });

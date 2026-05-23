@@ -1,4 +1,5 @@
 const postModel = require("../models/Post.model");
+const likeModel = require("../models/Like.model");
 const ImageKit = require('@imagekit/nodejs');
 const { toFile } = require('@imagekit/nodejs');
 const jwt = require("jsonwebtoken");
@@ -123,6 +124,26 @@ async function PostDetailController(req, res) {
         });
     }
 }   
+
+async function FeedController(req, res) {
+    const user = req.user;
+    const userId = user.id;
+    const posts = await Promise.all((await postModel.find().populate("userId", "username profileImage").lean())
+        .map(async (post) => {
+            const isliked = await likeModel.findOne({
+               username: user.username,
+                postID: post._id,
+                
+            }) 
+            post.isliked = !!isliked;
+            return post;
+        }));
+
+    res.status(200).json({
+        message: "Feed Posts!",
+        posts
+    })
+}
 module.exports = {
-    PostCreateController ,PostGetController,PostDetailController
+    PostCreateController ,PostGetController,PostDetailController,FeedController
 }
