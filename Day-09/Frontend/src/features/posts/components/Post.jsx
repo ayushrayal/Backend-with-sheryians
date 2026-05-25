@@ -1,13 +1,16 @@
 import React from 'react'
 import "../style/feed.scss"
 export const Post = ({post}) => {
+  const profileImage = post.userId?.profileImage || "https://ik.imagekit.io/ayushrayal/Default.webp?updatedAt=1778609836107"
+  const username = post.userId?.username || "Unknown User"
+
   return (
     <div className="post">
             <div className="user-info">
                 <div className="img-container">
-                    <img src={post.userId.profileImage} alt="Profile Image" />
+                    <img src={profileImage} alt="Profile Image" />
                 </div>
-                <div className="username">{post.userId.username}</div>
+                <div className="username">{username}</div>
             </div>
             <div className="post-content">
                 <img src={post.imgUrl} alt="Image" />

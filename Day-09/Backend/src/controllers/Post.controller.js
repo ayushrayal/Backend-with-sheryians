@@ -128,21 +128,27 @@ async function PostDetailController(req, res) {
 async function FeedController(req, res) {
     const user = req.user;
     const userId = user.id;
-    const posts = await Promise.all((await postModel.find().populate("userId", "username profileImage").lean())
-        .map(async (post) => {
+    const postsData = await postModel
+        .find({})
+        .sort({ _id: -1 })
+        .populate("userId", "username profileImage")
+        .lean();
+
+    const posts = await Promise.all(
+        postsData.map(async (post) => {
             const isliked = await likeModel.findOne({
-               username: user.username,
+                username: user.username,
                 postID: post._id,
-                
-            }) 
+            });
             post.isliked = !!isliked;
             return post;
-        }));
+        })
+    );
 
     res.status(200).json({
         message: "Feed Posts!",
-        posts
-    })
+        posts,
+    });
 }
 module.exports = {
     PostCreateController ,PostGetController,PostDetailController,FeedController

@@ -1,0 +1,24 @@
+.navbar{
+    max-width: 400px;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: #333;
+    color: rgb(186, 171, 171);
+    gap: 20px;
+    .create-post-btn{
+        background-color: #f53af2;
+        color: white;
+        border: none;
+        padding: 0.5rem 1rem;
+        border-radius: 0.5rem;
+        cursor: pointer;
+        font-size: 1rem;
+        font-weight: bold;
+    }
+    h1{
+        font-size: 1.5rem;
+    }
+}

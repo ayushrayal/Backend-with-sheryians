@@ -1,0 +1,37 @@
+.createPost{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    form{
+        max-width: 400px;
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+        input{
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #3d3d3d;
+            border-radius: 4px;
+            font-size: 16px;
+            font-family:monospace;
+        }
+        button{
+            padding: 10px;
+            background-color: #cf14b6;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            transition: all 0.2s ease;
+            cursor: pointer;
+            &:active{
+                scale:0.90;
+            }
+        }
+    }
+}

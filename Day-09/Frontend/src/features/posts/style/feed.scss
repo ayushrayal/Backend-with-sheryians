@@ -1,8 +1,9 @@
 .feed-page {
     height: 100vh;
     display: flex;
+    flex-direction: column;
     justify-content: center;
-    align-items: flex-start;
+    align-items: center;
     background-color: #121212;
     color: #e4d1d1;
 

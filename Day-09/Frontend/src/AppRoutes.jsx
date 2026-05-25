@@ -3,17 +3,17 @@ import Login  from "./features/auth/pages/Login"
 import { useAuth } from './features/auth/hooks/useAuth'
 import React from 'react'
 import Register from './features/auth/pages/Register'
-import Profile from './features/auth/pages/Profile'
 import Feed from './features/posts/pages/Feed'
+import CreatePost from './features/posts/pages/CreatePost'
 const AppRoutes = () => {
     const {user} = useAuth()
     return (
         <BrowserRouter>
-            <Routes>
-                
+            <Routes> 
                 <Route path='/login' element={<Login/>} />
                 <Route path='/register' element={<Register/>} />
                 <Route path='/' element={<Feed/>}/>
+                <Route path='/create-post' element={<CreatePost/>}/>
             </Routes>
         </BrowserRouter>)
 }
