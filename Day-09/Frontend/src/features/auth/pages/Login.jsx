@@ -16,7 +16,7 @@ const Login = () => {
         
         handleLogin(identifier,password)
         .then(() => {
-            navgigate('/')
+            navgigate('/home')
         })
            
        }

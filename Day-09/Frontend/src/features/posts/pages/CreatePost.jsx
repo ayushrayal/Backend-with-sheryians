@@ -12,7 +12,7 @@ const CreatePost = () => {
     e.preventDefault();
     const imageFile = fileInputRef.current.files[0]
     await createPost(imageFile,caption)
-    navigate("/")
+    navigate("/home")
     }
   return (
     <main className='createPost'><form>

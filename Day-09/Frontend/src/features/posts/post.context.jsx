@@ -1,5 +1,5 @@
 import { createContext, useEffect, useState } from "react";
-import {feedAllPosts, createPost as createPostApi} from "./services/post.api";
+import {feedAllPosts, createPost as createPostApi, likePost, unlikePost} from "./services/post.api";
 export const PostContext = createContext();
 export const PostProvider = ({ children }) => {
    const [feedPosts, setFeedPosts] = useState([]);
@@ -32,12 +32,32 @@ export const PostProvider = ({ children }) => {
    useEffect(() => {
       getAllPosts();
    }, []);
+   const likePostContext = async (postID) => {
+      try{
+         const data = await likePost(postID)
+         getAllPosts()
+         return data
+      }catch(err){
+         throw err
+      }
+   }
+   const unlikePostContext = async (postID) => {
+      try{
+         const data = await unlikePost(postID)
+         getAllPosts()
+         return data
+      }catch(err){
+         throw err
+      }
+   }
    return (
       <PostContext.Provider
          value={{
             feedPosts,
              loading,
-             createPost
+             createPost,
+             likePostContext,
+             unlikePostContext
          }}
       >
          {children}

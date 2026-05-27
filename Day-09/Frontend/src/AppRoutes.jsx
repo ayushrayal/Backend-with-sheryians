@@ -5,14 +5,16 @@ import React from 'react'
 import Register from './features/auth/pages/Register'
 import Feed from './features/posts/pages/Feed'
 import CreatePost from './features/posts/pages/CreatePost'
+import FirstScreen from './features/home/FirstScreen'
 const AppRoutes = () => {
     const {user} = useAuth()
     return (
         <BrowserRouter>
             <Routes> 
+                <Route path='/' element={<FirstScreen/>} />
                 <Route path='/login' element={<Login/>} />
                 <Route path='/register' element={<Register/>} />
-                <Route path='/' element={<Feed/>}/>
+                <Route path='/home' element={<Feed/>}/>
                 <Route path='/create-post' element={<CreatePost/>}/>
             </Routes>
         </BrowserRouter>)

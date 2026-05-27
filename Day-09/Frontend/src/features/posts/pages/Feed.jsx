@@ -3,7 +3,7 @@ import { Post } from "../components/Post"
 import { usePost } from "../hooks/usePost"
 import "../style/feed.scss"
 const Feed = () => {
-  const { feedPosts, loading } = usePost()
+  const { feedPosts, loading, likePostContext, unlikePostContext } = usePost()
   if (loading) {
     return (<main >
       <h1>Loading...</h1>
@@ -16,7 +16,7 @@ const Feed = () => {
       <div className="feed">
         <div className="posts">{
           feedPosts.map((post) => {
-            return <Post key={post._id} post={post} />
+            return <Post key={post._id} post={post} likePost={likePostContext} unlikePost={unlikePostContext} />
           })
         }
         </div>
