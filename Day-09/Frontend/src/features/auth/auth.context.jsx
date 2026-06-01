@@ -39,9 +39,18 @@ export function AuthProvider({ children }) {
             setLoading(false)
         }
     }
+    const handleLogout = () => {
+        document.cookie = "TOKEN=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+        setUser(null);
+    };
+    useEffect(() => {
+        getCurrentUser().catch((err) => {
+            console.log("Session initialization failed or no active session:", err.message);
+        });
+    }, []);
     return(
 
-        <AuthContext.Provider value={{user,loading,handleLogin,handleRegister,getCurrentUser}}>
+        <AuthContext.Provider value={{user,loading,handleLogin,handleRegister,getCurrentUser,handleLogout}}>
             {children}
         </AuthContext.Provider>
     )

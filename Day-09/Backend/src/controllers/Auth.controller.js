@@ -122,7 +122,8 @@ async function getMe(req,res) {
             email: userData.email,
             isPrivate:userData.isPrivate,
             bio:userData.bio,
-            profileimage:userData.profileimage 
+            profileImage: userData.profileImage || userData.profileimage,
+            profileimage: userData.profileImage || userData.profileimage
         }
     })
 }

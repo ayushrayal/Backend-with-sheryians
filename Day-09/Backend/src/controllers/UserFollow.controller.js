@@ -51,39 +51,80 @@ async function UserUnfollowController(req,res){
     })
 }
 async function getFollowersController(req,res){
-    const user = req.user.username;
-    const followers = await followerModel.find({
-    followingID: user
-   });
-   if(!followers){
-    return res.status(200).json({
-        message:"You have Zero followers"
-    })
-   }
-   res.status(200).json({
-    message:`Your total followers is ${followers.length}`,
-    followers
-   })
+    try {
+        const user = req.user.username;
+        const followers = await followerModel.find({
+            followingID: user
+        });
+
+        // Load profile details (profileImage, bio, email) for each follower
+        const followerUsernames = followers.map(f => f.followerID);
+        const users = await userModel.find({ username: { $in: followerUsernames } }, "username profileImage bio email");
+
+        const userMap = {};
+        users.forEach(u => {
+            userMap[u.username] = u;
+        });
+
+        const followersWithDetails = followers.map(f => {
+            const profile = userMap[f.followerID];
+            const img = profile?.profileImage || "https://ik.imagekit.io/ayushrayal/Default.webp?updatedAt=1778609836107";
+            return {
+                _id: f._id,
+                followerID: f.followerID,
+                followingID: f.followingID,
+                profileImage: img,
+                profileimage: img, // backwards compatibility
+                bio: profile?.bio || "",
+                email: profile?.email || ""
+            };
+        });
+
+        res.status(200).json({
+            message: `Your total followers is ${followers.length}`,
+            followers: followersWithDetails
+        });
+    } catch (err) {
+        res.status(500).json({ message: "Error fetching followers", error: err.message });
+    }
 }
 async function getFollowingController(req,res){
-    const user = req.user.username;
-
-    const following = await followerModel.find({
-        followerID: user
-    });
-
-    if(following.length === 0){
-        return res.status(200).json({
-            message:"You have Zero following!",
-            following:[]
+    try {
+        const user = req.user.username;
+        const following = await followerModel.find({
+            followerID: user
         });
+
+        // Load profile details (profileImage, bio, email) for each followed user
+        const followingUsernames = following.map(f => f.followingID);
+        const users = await userModel.find({ username: { $in: followingUsernames } }, "username profileImage bio email");
+
+        const userMap = {};
+        users.forEach(u => {
+            userMap[u.username] = u;
+        });
+
+        const followingWithDetails = following.map(f => {
+            const profile = userMap[f.followingID];
+            const img = profile?.profileImage || "https://ik.imagekit.io/ayushrayal/Default.webp?updatedAt=1778609836107";
+            return {
+                _id: f._id,
+                followerID: f.followerID,
+                followingID: f.followingID,
+                profileImage: img,
+                profileimage: img, // backwards compatibility
+                bio: profile?.bio || "",
+                email: profile?.email || ""
+            };
+        });
+
+        res.status(200).json({
+            message: `Your total following is ${following.length}`,
+            following: followingWithDetails
+        });
+    } catch (err) {
+        res.status(500).json({ message: "Error fetching following", error: err.message });
     }
-
-    res.status(200).json({
-        message:`Your total following is ${following.length}`,
-        following
-    });
-
 }
 async function othersProfileController(req, res) {
     try {
@@ -105,16 +146,26 @@ async function othersProfileController(req, res) {
             user => user.followingID
         );
 
+        // Fetch all users with profileImage (camelCase)
         const allUsers = await userModel.find(
             {},
-            "username profileimage bio"
+            "username profileImage bio email"
         );
 
         const otherUsers = allUsers.filter(user =>
             user.username !== currentUser &&
             !followerUsernames.includes(user.username) &&
             !followingUsernames.includes(user.username)
-        );
+        ).map(user => {
+            const img = user.profileImage || "https://ik.imagekit.io/ayushrayal/Default.webp?updatedAt=1778609836107";
+            return {
+                username: user.username,
+                profileImage: img,
+                profileimage: img, // backwards compatibility
+                bio: user.bio || "",
+                email: user.email || ""
+            };
+        });
 
         return res.status(200).json({
             message: "Other users fetched successfully",

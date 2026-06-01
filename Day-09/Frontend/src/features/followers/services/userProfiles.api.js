@@ -30,3 +30,21 @@ export const getOthersProfile = async (username) =>{
     }
 }
 
+export const followUser = async (username) => {
+    try {
+        const response = await api.post(`/follow/${username}`)
+        return response.data
+    } catch(err) {
+        throw err
+    }
+}
+
+export const unfollowUser = async (username) => {
+    try {
+        const response = await api.post(`/unfollow/${username}`)
+        return response.data
+    } catch(err) {
+        throw err
+    }
+}
+
