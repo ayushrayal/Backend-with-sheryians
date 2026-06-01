@@ -35,3 +35,12 @@ export async function getme() {
         throw err
     }
 }
+
+export async function updateProfileApi(data) {
+    try {
+        const response = await api.patch("/update-profile", data)
+        return response.data
+    } catch(err) {
+        throw err
+    }
+}

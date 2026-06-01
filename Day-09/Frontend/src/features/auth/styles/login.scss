@@ -1,58 +1,198 @@
-@mixin flex-col($gap:1rem){
-    display: flex;
-    flex-direction: column;
-    gap:$gap;
-}
+$primary: #6C63FF;
+$primary-hover: #574eff;
+$accent: #FF4D8D;
+$border-color: #E5E7EB;
+$text-primary: #1F2937;
+$text-secondary: #6B7280;
+$danger-color: #EF4444;
+$danger-bg: #FEE2E2;
+$card-shadow: 0 10px 25px rgba(0, 0, 0, 0.04);
 
-main{
-    height: 100%;
+.auth-main-wrapper {
+    min-height: 100vh;
     width: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
-    .form-container{
-        min-width: 25%;
-        @include flex-col(0rem);
-        h2{
-            font-size: 4rem;
-            text-align: center;
-            color: black;
+    background-color: #F6F7FB;
+    padding: 1.5rem;
+    animation: fadeIn 0.4s ease-out;
+}
+
+.auth-card-container {
+    background: #ffffff;
+    border: 1px solid $border-color;
+    border-radius: 16px;
+    box-shadow: $card-shadow;
+    width: 380px;
+    max-width: 100%;
+    padding: 2.5rem 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1.5rem;
+
+    .auth-brand-header {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        gap: 0.5rem;
+
+        .connectly-brand-logo {
+            font-family: 'Outfit', sans-serif;
+            font-size: 2.75rem;
+            font-weight: 800;
+            letter-spacing: -1.5px;
+            background: linear-gradient(135deg, $primary 0%, $accent 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-transform: uppercase;
         }
-        p{
-            text-align: center;
-            color: rgba(76, 75, 75, 0.903);
-            font-weight: 100;
-            font-size: 1rem;
-            margin-bottom: 1rem;
-            margin-top: 1rem;
+
+        .brand-subtitle {
+            font-size: 0.875rem;
+            color: $text-secondary;
+            line-height: 1.4;
+            font-weight: 600;
+            letter-spacing: 0.5px;
         }
-        form{
-            @include flex-col(1rem);
-            input,button{
-                outline: none;
-                border: none;
-                padding-inline: 2.5rem;
-                padding-block: 1rem;
-                border-radius: .5rem;
-                font-size: 1.5rem;
-                border-bottom: 0.1rem solid black;
-                font-family: monospace;
+    }
+
+    .auth-error-banner {
+        background-color: $danger-bg;
+        color: $danger-color;
+        border: 1px solid rgba($danger-color, 0.2);
+        padding: 0.6rem 0.85rem;
+        border-radius: 12px;
+        font-size: 0.8rem;
+        text-align: center;
+        font-weight: 500;
+        animation: shake 0.3s ease-in-out;
+    }
+
+    .auth-form {
+        display: flex;
+        flex-direction: column;
+        gap: 0.95rem;
+
+        .input-group {
+            position: relative;
+            width: 100%;
+        }
+
+        .auth-input-field {
+            width: 100%;
+            background-color: #F9FAFB;
+            border: 1px solid $border-color;
+            padding: 0.75rem 0.85rem;
+            border-radius: 12px;
+            font-size: 0.875rem;
+            color: $text-primary;
+            outline: none;
+            transition: all 0.2s ease;
+
+            &:focus {
+                background-color: #ffffff;
+                border-color: $primary;
+                box-shadow: 0 0 0 3px rgba($primary, 0.1);
             }
-            button{
-                font-weight: 800;
-                cursor: pointer;
-                &:active{
-                    scale: .98;
-                }
+        }
+
+        .btn-auth-submit {
+            width: 100%;
+            background-color: $primary;
+            color: #ffffff;
+            border: none;
+            padding: 0.8rem;
+            border-radius: 12px;
+            font-size: 0.9rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 0.5rem;
+
+            &:hover {
+                background-color: $primary-hover;
+                transform: translateY(-1px);
+                box-shadow: 0 4px 12px rgba($primary, 0.15);
+            }
+
+            &:active {
+                transform: translateY(0);
+            }
+
+            &:disabled {
+                opacity: 0.7;
+                cursor: not-allowed;
             }
         }
-       .toggleAuthForm{
-        color: red;
-        cursor: pointer;
-        text-decoration: none;
-       }
+    }
+
+    .auth-divider {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.75rem;
+        margin: 0.25rem 0;
+
+        .divider-line {
+            flex: 1;
+            height: 1px;
+            background-color: $border-color;
+        }
+
+        .divider-text {
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: $text-secondary;
+        }
+    }
+
+    .auth-footer-text {
+        text-align: center;
+        font-size: 0.85rem;
+        color: $text-primary;
+
+        .toggleAuthForm {
+            color: $primary;
+            font-weight: 700;
+            text-decoration: none;
+            transition: color 0.2s;
+
+            &:hover {
+                color: $primary-hover;
+                text-decoration: underline;
+            }
+        }
     }
 }
-img{
-    height: 100%;
+
+// Mini Spinner
+.mini-spinner {
+    width: 16px;
+    height: 16px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-top: 2px solid #ffffff;
+    border-radius: 50%;
+    animation: spin 0.6s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-4px); }
+    75% { transform: translateX(4px); }
 }

@@ -127,4 +127,54 @@ async function getMe(req,res) {
         }
     })
 }
-module.exports = { registerUser, loginUser, PrivateRoute, getMe }
+
+async function updateProfile(req, res) {
+    const userId = req.user.id;
+    const { username, bio, profileImage } = req.body;
+
+    try {
+        const user = await userModel.findById(userId);
+        if (!user) {
+            return res.status(404).json({ message: "User not found!" });
+        }
+
+        if (username && username !== user.username) {
+            const isUserExist = await userModel.findOne({ username });
+            if (isUserExist) {
+                return res.status(409).json({
+                    message: "Username Already Exists!"
+                });
+            }
+            user.username = username;
+        }
+
+        if (bio !== undefined) {
+            user.bio = bio;
+        }
+
+        if (profileImage !== undefined) {
+            user.profileImage = profileImage;
+        }
+
+        await user.save();
+
+        res.status(200).json({
+            message: "Profile updated successfully!",
+            user: {
+                username: user.username,
+                email: user.email,
+                isPrivate: user.isPrivate,
+                bio: user.bio,
+                profileImage: user.profileImage,
+                profileimage: user.profileImage
+            }
+        });
+    } catch (err) {
+        res.status(500).json({
+            message: "Error updating profile",
+            error: err.message
+        });
+    }
+}
+
+module.exports = { registerUser, loginUser, PrivateRoute, getMe, updateProfile }

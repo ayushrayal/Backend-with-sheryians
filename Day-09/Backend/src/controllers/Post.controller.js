@@ -150,6 +150,44 @@ async function FeedController(req, res) {
         posts,
     });
 }
+
+async function PostDeleteController(req, res) {
+    const decoded = req.user;
+    const userId = decoded.id;
+    const postId = req.params.postId;
+
+    try {
+        const post = await postModel.findById(postId);
+        if (!post) {
+            return res.status(404).json({
+                message: "Post not found!"
+            });
+        }
+
+        if (post.userId.toString() !== userId) {
+            return res.status(403).json({
+                message: "Unauthorized to delete this post!"
+            });
+        }
+
+        await postModel.findByIdAndDelete(postId);
+        await likeModel.deleteMany({ postID: postId });
+
+        return res.status(200).json({
+            message: "Post deleted successfully!"
+        });
+    } catch (err) {
+        return res.status(500).json({
+            message: "Internal server error.",
+            error: err.message
+        });
+    }
+}
+
 module.exports = {
-    PostCreateController ,PostGetController,PostDetailController,FeedController
+    PostCreateController,
+    PostGetController,
+    PostDetailController,
+    FeedController,
+    PostDeleteController
 }

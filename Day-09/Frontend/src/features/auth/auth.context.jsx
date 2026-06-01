@@ -1,5 +1,5 @@
 import { createContext, useState, useEffect } from "react";
-import { login, register, getme } from "./services/auth.api.js";
+import { login, register, getme, updateProfileApi } from "./services/auth.api.js";
 export const AuthContext = createContext()
 
 export function AuthProvider({ children }) {
@@ -43,6 +43,18 @@ export function AuthProvider({ children }) {
         document.cookie = "TOKEN=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
         setUser(null);
     };
+    const updateUserProfile = async (data) => {
+        setLoading(true);
+        try {
+            const response = await updateProfileApi(data);
+            setUser(response.user);
+            return response;
+        } catch (err) {
+            throw err;
+        } finally {
+            setLoading(false);
+        }
+    };
     useEffect(() => {
         getCurrentUser().catch((err) => {
             console.log("Session initialization failed or no active session:", err.message);
@@ -50,7 +62,7 @@ export function AuthProvider({ children }) {
     }, []);
     return(
 
-        <AuthContext.Provider value={{user,loading,handleLogin,handleRegister,getCurrentUser,handleLogout}}>
+        <AuthContext.Provider value={{user,loading,handleLogin,handleRegister,getCurrentUser,handleLogout,updateUserProfile}}>
             {children}
         </AuthContext.Provider>
     )

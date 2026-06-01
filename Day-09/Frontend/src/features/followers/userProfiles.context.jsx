@@ -1,6 +1,7 @@
-import { createContext, useEffect, useState } from "react";
+import { createContext, useEffect, useState, useContext } from "react";
 import { getFollowers, getFollowing, getOthersProfile, followUser, unfollowUser } from "./services/userProfiles.api";
 import { useAuth } from "../auth/hooks/useAuth";
+import { PostContext } from "../posts/post.context.jsx";
 
 export const UsersProfileContext = createContext(null);
 
@@ -9,8 +10,13 @@ export function UsersProfileProvider({ children }) {
     const [following, setFollowing] = useState([]);
     const [othersProfile, setOthersProfile] = useState([]);
     const [loading, setLoading] = useState(false);
+    
     const auth = useAuth();
     const currentUser = auth?.user;
+    
+    // Consume PostContext to trigger timeline updates
+    const postContext = useContext(PostContext);
+    const getAllPosts = postContext?.getAllPosts;
 
     const handleFollowers = async () => {
         try {
@@ -84,9 +90,14 @@ export function UsersProfileProvider({ children }) {
         try {
             await followUser(username);
             // Refresh in background to get real DB ids
-            handleFollowing();
-            handleOthersProfile();
-            handleFollowers();
+            await Promise.all([
+                handleFollowing(),
+                handleOthersProfile(),
+                handleFollowers()
+            ]);
+            if (getAllPosts) {
+                await getAllPosts();
+            }
         } catch (err) {
             console.error("Failed to follow user, rolling back:", err);
             setOthersProfile(prevOthers);
@@ -119,9 +130,14 @@ export function UsersProfileProvider({ children }) {
 
         try {
             await unfollowUser(username);
-            handleFollowing();
-            handleOthersProfile();
-            handleFollowers();
+            await Promise.all([
+                handleFollowing(),
+                handleOthersProfile(),
+                handleFollowers()
+            ]);
+            if (getAllPosts) {
+                await getAllPosts();
+            }
         } catch (err) {
             console.error("Failed to unfollow user, rolling back:", err);
             setOthersProfile(prevOthers);

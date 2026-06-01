@@ -6,13 +6,13 @@ import { PostProvider } from './features/posts/post.context.jsx'
 import { UsersProfileProvider } from './features/followers/userProfiles.context.jsx'
 const App = () => {
   return (
-    <PostProvider>
-      <AuthProvider>
+    <AuthProvider>
+      <PostProvider>
         <UsersProfileProvider>
            <AppRoutes/>
         </UsersProfileProvider>
-      </AuthProvider>
-    </PostProvider>
+      </PostProvider>
+    </AuthProvider>
   )
 }
 

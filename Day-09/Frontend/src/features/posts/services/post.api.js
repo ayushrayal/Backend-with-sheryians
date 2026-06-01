@@ -44,3 +44,21 @@ export const unlikePost = async(postID) =>{
         throw err
     }   
 }
+
+export const getUserPosts = async () => {
+    try {
+        const response = await api.get("/posts")
+        return response.data
+    } catch(err) {
+        throw err
+    }
+}
+
+export const deletePost = async (postId) => {
+    try {
+        const response = await api.delete(`/posts/${postId}`)
+        return response.data
+    } catch(err) {
+        throw err
+    }
+}
