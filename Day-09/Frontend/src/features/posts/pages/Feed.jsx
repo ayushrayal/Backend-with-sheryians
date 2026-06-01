@@ -1,3 +1,4 @@
+import UsersProfile from "../../followers/pages/UsersProfile"
 import Navbar from "../components/Navbar"
 import { Post } from "../components/Post"
 import { usePost } from "../hooks/usePost"
@@ -11,8 +12,10 @@ const Feed = () => {
     )
   }
   return (
-    <main className='feed-page'>
-      <Navbar/>
+    <main className='main-feed'>
+      <UsersProfile/>
+     <div className="feed-page">
+       <Navbar/>
       <div className="feed">
         <div className="posts">{
           feedPosts.map((post) => {
@@ -21,8 +24,9 @@ const Feed = () => {
         }
         </div>
       </div>
+     </div>
     </main>
-  )
+  ) 
 }
 
 export default Feed

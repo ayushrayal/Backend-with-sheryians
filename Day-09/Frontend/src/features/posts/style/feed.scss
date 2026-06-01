@@ -1,3 +1,8 @@
+.main-feed{
+    display:grid;
+    grid-template-columns: 1fr 400px 1fr;
+    gap:1rem;
+    background-color: #f0f0f0;
 .feed-page {
     height: 100vh;
     display: flex;
@@ -103,4 +108,5 @@
             }
         }
     }
+}
 }

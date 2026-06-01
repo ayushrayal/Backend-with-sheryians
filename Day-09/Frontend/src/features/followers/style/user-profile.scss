@@ -1,0 +1,42 @@
+.users-profile{
+    display:grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: repeat(3, 33.33%);
+    .followers-profile, .following-profile, .others-profile{
+        padding: 10px;
+        max-height: 245px;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        gap: 1px;
+        background-color: #f0f0f0;
+        overflow-y: auto;
+        &::-webkit-scrollbar{
+            display: none;
+        }
+        .UserHeading{
+            font-size: 2rem;
+            font-weight: 600;
+                 
+        }
+        .card{
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            background-color: rgb(228, 228, 228);
+            padding: 10px;
+            height: 50px;
+            border-radius: 5px;
+        img{
+            width: 2.5rem;
+            aspect-ratio: 1/1;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+        .username{
+            font-size: 1.5rem;
+            font-weight: 500;
+        }
+    }
+    }
+}

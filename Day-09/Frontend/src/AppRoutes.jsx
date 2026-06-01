@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from 'react-router'
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import Login  from "./features/auth/pages/Login"
 import { useAuth } from './features/auth/hooks/useAuth'
 import React from 'react'

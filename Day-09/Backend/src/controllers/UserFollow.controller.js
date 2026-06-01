@@ -67,17 +67,66 @@ async function getFollowersController(req,res){
 }
 async function getFollowingController(req,res){
     const user = req.user.username;
-    const followers = await followerModel.find({
-    followerID: user
-   });
-   if(!followers){
-    return res.status(200).json({
-        message:"You have Zero following!"
-    })
-   }
-   res.status(200).json({
-    message:`Your total following is ${followers.length}`,
-    followers
-   })
+
+    const following = await followerModel.find({
+        followerID: user
+    });
+
+    if(following.length === 0){
+        return res.status(200).json({
+            message:"You have Zero following!",
+            following:[]
+        });
+    }
+
+    res.status(200).json({
+        message:`Your total following is ${following.length}`,
+        following
+    });
+
 }
-module.exports = {UserFollowController, UserUnfollowController, getFollowersController, getFollowingController}
+async function othersProfileController(req, res) {
+    try {
+        const currentUser = req.user.username;
+
+        const followers = await followerModel.find({
+            followingID: currentUser
+        });
+
+        const following = await followerModel.find({
+            followerID: currentUser
+        });
+
+        const followerUsernames = followers.map(
+            user => user.followerID
+        );
+
+        const followingUsernames = following.map(
+            user => user.followingID
+        );
+
+        const allUsers = await userModel.find(
+            {},
+            "username profileimage bio"
+        );
+
+        const otherUsers = allUsers.filter(user =>
+            user.username !== currentUser &&
+            !followerUsernames.includes(user.username) &&
+            !followingUsernames.includes(user.username)
+        );
+
+        return res.status(200).json({
+            message: "Other users fetched successfully",
+            count: otherUsers.length,
+            otherUsers
+        });
+
+    } catch (error) {
+        return res.status(500).json({
+            message: "Internal Server Error",
+            error: error.message
+        });
+    }
+}
+module.exports = {UserFollowController, UserUnfollowController, getFollowersController, getFollowingController, othersProfileController}
