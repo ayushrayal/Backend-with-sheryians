@@ -1,11 +1,11 @@
 import{handleLogin,handleRegister,handleLogout,handleGetme} from "./services/auth.service.js";
-import { createContext, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 
 export const AuthContext = createContext();
 
 export const AuthProvider = ({children})=>{
     const [user,setUser] = useState(null);
-    const [loading,setLoading] = useState(false);
+    const [loading,setLoading] = useState(true);
 
     const register = async(username,email,password)=>{
         try{
@@ -54,6 +54,9 @@ export const AuthProvider = ({children})=>{
             throw err;
         }
     }
+    useEffect(()=>{
+getMe()
+    },[])
     return (
         <AuthContext.Provider value={{ user, login, register, logout, getMe, loading }}>
             {children}
