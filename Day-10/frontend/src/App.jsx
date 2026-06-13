@@ -1,10 +1,8 @@
-import FaceExpression from "./components/FaceExpression";
+import AppRoutes from "./AppRoutes";
 
 function App() {
   return (
-    <div>
-      <FaceExpression />
-    </div>
+    <AppRoutes />
   );
 }
 
