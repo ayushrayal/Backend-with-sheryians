@@ -1,0 +1,18 @@
+ .logoutButton{
+            background-color: #28A745;
+            color: #ffffff;
+            padding-inline: 1.5rem;
+            padding-block: .9rem;
+            border-radius: 10px;
+            border: none;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: all ease 2s;
+            &:active{
+            scale: .90;
+        }
+        }
+
+
+
+        

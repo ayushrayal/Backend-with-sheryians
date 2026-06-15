@@ -9,18 +9,22 @@ const getSongController = async (req, res) => {
             return res.status(400).json({ message: "Mood is required" });
         }
 
+        console.log("mood", mood);
+
+
+
         const token = await getSpotifyToken();
 
-             const moodMap = {
-            happy: "genre:pop mood:happy",
-            sad: "genre:acoustic mood:sad",
-            angry: "genre:rock mood:angry",
-            neutral: "top hits",
-            surprise: "genre:party mood:energetic"
+        const moodMap = {
+            happy: "Hindi romantic songs",
+            sad: "Arijit Singh",
+            angry: "motivational hindi songs",
+            neutral: "latest hindi songs",
+            surprised: "Yo Yo Honey Singh"
         };
-
         // Search query ko thoda specific banate hain taaki API confuse na ho
-        const searchQuery = moodMap[mood.toLowerCase()] || "top%20hits";
+        const searchQuery = moodMap[mood?.toLowerCase()] || "top%20hits";
+        console.log("searchQuery", searchQuery);
 
         const spotifyResponse = await axios.get(
             "https://api.spotify.com/v1/search",

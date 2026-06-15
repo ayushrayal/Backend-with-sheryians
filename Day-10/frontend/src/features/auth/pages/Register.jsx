@@ -22,7 +22,7 @@ const Register = () => {
         }
     }
   return (
-   <main >
+   <main className="main">
     <div className="register-container">   
         <h1 >Create Account</h1>
         <form className="flex flex-col gap-4">

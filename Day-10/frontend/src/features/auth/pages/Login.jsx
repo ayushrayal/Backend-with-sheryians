@@ -24,7 +24,7 @@ const Login = () => {
         }
     }
   return (
-   <main >
+   <main className='main' >
     <div className="login-container">
         <h1>Welcome Back</h1>
         <form onSubmit={handleSubmit}>

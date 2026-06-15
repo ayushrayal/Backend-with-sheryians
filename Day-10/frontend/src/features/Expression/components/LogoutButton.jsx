@@ -2,6 +2,7 @@ import React from 'react'
 import { useAuth } from '../../auth/hook/useAuth'
 import {useNavigate }from 'react-router'
 import toast from "react-hot-toast";
+import "../style/button.scss"
 const LogoutButton = () => {
     const { logout } = useAuth();
         const navigate = useNavigate();
@@ -16,7 +17,7 @@ const LogoutButton = () => {
     }
   return (
     <button className="logoutButton" onClick={handleLogout}>
-      Go Back
+      logout
     </button>
   )
 }
