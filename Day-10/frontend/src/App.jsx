@@ -2,7 +2,10 @@ import AppRoutes from "./AppRoutes";
 
 function App() {
   return (
-    <AppRoutes />
+    <>
+      <div className="gradient-mesh" />
+      <AppRoutes />
+    </>
   );
 }
 

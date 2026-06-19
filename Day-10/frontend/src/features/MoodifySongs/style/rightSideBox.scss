@@ -1,27 +1,423 @@
-.rightsidebox{
-    height: 90vh;
-    overflow-y: hidden;
-    padding: 10px;
-    .songcontainer{
-        height: 100%;
-        .song{
-            height: 50px;
-            margin-bottom: 10px;
-            display: flex;
-            gap: 10px;
-            background-color: bisque;
-            padding: 5px;
-            border-radius: 10px;
-            img{
-                width: 3rem;
-                height: 3rem;
-                border-radius: 50%;
-                // aspect-ratio: 1/1;
-            }
-            h3{
-                font-size: 1rem;
-                font-weight: 900;
-            }
-        }
+// ============================================================
+// Right Panel — Song Recommendations
+// ============================================================
+
+.right-panel {
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-premium);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+
+  @media (min-width: 1025px) {
+    height: 100%;
+  }
+
+  &__header {
+    padding: 1.5rem 1.75rem 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    flex-shrink: 0;
+  }
+
+  &__header-info {
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__title {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    line-height: 1.2;
+    font-family: 'Space Grotesk', sans-serif;
+  }
+
+  &__subtitle {
+    font-size: 0.6875rem;
+    font-weight: 600;
+    color: var(--color-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  &__count {
+    font-size: 0.6875rem;
+    color: var(--color-accent);
+    background: rgba(0, 255, 163, 0.08);
+    border: 1px solid rgba(0, 255, 163, 0.15);
+    padding: 0.25rem 0.625rem;
+    border-radius: 99px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  // Scrollable list — independent scroll on desktop
+  &__list {
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+
+    &::-webkit-scrollbar {
+      width: 4px;
     }
+    &::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    &::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 99px;
+      &:hover {
+        background: var(--color-primary);
+      }
+    }
+
+    @media (max-width: 1024px) {
+      overflow-y: visible; // scrolls with page on mobile/tablet
+    }
+  }
+
+  // State messages
+  &__state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    padding: 4rem 1.5rem;
+    text-align: center;
+    color: var(--color-text-muted);
+    font-size: 0.875rem;
+
+    .state-icon {
+      font-size: 2.25rem;
+      filter: drop-shadow(0 4px 10px rgba(0,0,0,0.3));
+    }
+
+    p {
+      max-width: 220px;
+      line-height: 1.5;
+      font-size: 0.8125rem;
+    }
+
+    &--error p {
+      color: var(--color-error);
+    }
+  }
+
+  .state-retry-btn {
+    padding: 0.5rem 1.25rem;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    color: #fff;
+    border-radius: var(--radius-sm);
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    cursor: pointer;
+    transition: all var(--transition);
+
+    &:hover {
+      background: var(--color-primary);
+      border-color: var(--color-primary);
+      box-shadow: 0 4px 12px rgba(124, 58, 237, 0.3);
+    }
+    &:active {
+      transform: scale(0.97);
+    }
+  }
+}
+
+// ============================================================
+// Song Card (Spotify Style)
+// ============================================================
+
+.song-card {
+  display: flex;
+  flex-direction: column;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: var(--radius-md);
+  padding: 0.75rem 1rem;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  animation: fade-in-up 0.4s cubic-bezier(0.16, 1, 0.3, 1) both;
+  width: 100%;
+  box-sizing: border-box;
+  overflow: hidden;
+
+  &.clickable {
+    cursor: pointer;
+  }
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.04);
+    border-color: rgba(255, 255, 255, 0.1);
+    transform: translateY(-2px) scale(1.005);
+    box-shadow: var(--shadow-premium), 0 4px 20px rgba(0, 0, 0, 0.3);
+  }
+
+  &.expanded {
+    background: rgba(255, 255, 255, 0.04);
+    border-color: var(--color-border-glow);
+  }
+
+  &__row {
+    display: flex;
+    align-items: center;
+    gap: 0.875rem;
+    width: 100%;
+    min-width: 0;
+    position: relative;
+  }
+
+  &__art {
+    width: 48px;
+    height: 48px;
+    border-radius: var(--radius-sm);
+    object-fit: cover;
+    flex-shrink: 0;
+    background-color: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+  }
+
+  &__body {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+  }
+
+  &__name {
+    font-size: 0.875rem;
+    font-weight: 700;
+    color: #fff;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 1.3;
+  }
+
+  &__details-row {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-size: 0.75rem;
+    color: var(--color-text-muted);
+  }
+
+  &__artist {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-weight: 500;
+  }
+
+  &__dot-divider {
+    opacity: 0.4;
+  }
+
+  &__duration {
+    opacity: 0.6;
+    flex-shrink: 0;
+  }
+
+  // Graceful no-preview warning (Desktop)
+  &__no-preview {
+    font-size: 0.6875rem;
+    color: var(--color-warning);
+    margin-top: 0.25rem;
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    flex-wrap: wrap;
+
+    .spotify-inline-link {
+      color: var(--color-secondary);
+      text-decoration: none;
+      font-weight: 700;
+      transition: color var(--transition);
+      display: inline-flex;
+      align-items: center;
+
+      &:hover {
+        color: #fff;
+        text-shadow: 0 0 8px rgba(6, 182, 212, 0.4);
+      }
+    }
+  }
+
+  &__mood-tag {
+    font-size: 0.65rem;
+    font-weight: 700;
+    padding: 0.2rem 0.5rem;
+    border-radius: 99px;
+    border: 1px solid transparent;
+    white-space: nowrap;
+    flex-shrink: 0;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+
+    @media (max-width: 520px) {
+      display: none; // hides tag on small mobile screen widths to prevent overlaps
+    }
+  }
+
+  &__actions {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-shrink: 0;
+  }
+
+  &__play-btn {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: rgba(255, 255, 255, 0.02);
+    color: var(--color-text-muted);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all var(--transition);
+
+    &:hover {
+      background: var(--color-primary);
+      border-color: var(--color-primary);
+      color: #fff;
+      box-shadow: 0 0 10px rgba(124, 58, 237, 0.4);
+    }
+
+    &.playing {
+      background: var(--color-primary);
+      border-color: var(--color-primary);
+      color: #fff;
+      box-shadow: 0 0 10px rgba(124, 58, 237, 0.4);
+    }
+  }
+
+  // Spotify Link Button (Compact on Mobile, Button with text on Desktop)
+  &__spotify-btn {
+    height: 32px;
+    padding: 0 0.625rem;
+    border-radius: 99px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: rgba(255, 255, 255, 0.02);
+    color: #1DB954;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.375rem;
+    text-decoration: none;
+    transition: all var(--transition);
+
+    &:hover {
+      background: #1DB954;
+      border-color: #1DB954;
+      color: #fff;
+      box-shadow: 0 0 10px rgba(29, 185, 84, 0.4);
+    }
+
+    .spotify-btn-text {
+      font-size: 0.6875rem;
+      font-weight: 700;
+      color: #fff;
+      white-space: nowrap;
+    }
+
+    // Hide text and padding on Mobile/Tablet to keep it compact
+    @media (max-width: 1024px) {
+      padding: 0;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+    }
+  }
+
+  // Spotify Embed Container (Expandable on Mobile & Tablet)
+  &__embed {
+    width: 100%;
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+    margin-top: 0.75rem;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-sizing: border-box;
+    animation: slide-expand 0.3s cubic-bezier(0.16, 1, 0.3, 1) both;
+
+    iframe {
+      display: block;
+      border-radius: var(--radius-sm);
+      width: 100% !important;
+      max-width: 100%;
+      border: 0;
+    }
+  }
+}
+
+// ============================================================
+// Premium Skeleton Loading (Matches SongCard structure)
+// ============================================================
+
+.skeleton {
+  background: linear-gradient(90deg, rgba(255,255,255,0.02) 25%, rgba(255,255,255,0.06) 50%, rgba(255,255,255,0.02) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.4s infinite cubic-bezier(0.25, 0.6, 0.36, 1);
+  border-radius: var(--radius-sm);
+
+  &--img    { width: 48px; height: 48px; border-radius: var(--radius-sm); flex-shrink: 0; }
+  &--title  { height: 14px; width: 100px; border-radius: 4px; }
+  &--artist { height: 11px; width: 70px; border-radius: 4px; margin-top: 5px; }
+  &--tag    { height: 18px; width: 60px; border-radius: 99px; margin-left: auto; flex-shrink: 0; }
+  &--btn    { width: 32px; height: 32px; border-radius: 50%; flex-shrink: 0; margin-left: 0.5rem; }
+}
+
+.song-card--skeleton {
+  pointer-events: none;
+  cursor: default;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.02);
+    transform: none;
+    box-shadow: none;
+  }
+
+  .song-card__body {
+    flex: 1;
+  }
+}
+
+// ============================================================
+// Animations
+// ============================================================
+
+@keyframes shimmer {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+@keyframes fade-in-up {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slide-expand {
+  from { opacity: 0; height: 0; }
+  to   { opacity: 1; height: 80px; }
 }

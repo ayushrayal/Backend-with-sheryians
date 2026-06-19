@@ -1,12 +1,133 @@
-* ,#root{
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: monospace;
-}
-html, body,#root {
-    height: 100%;
-    width: 100%;
-    background: #020617;
+// ============================================================
+// MOODIFY — Premium Gen-Z Dark + Neon Design System
+// ============================================================
+
+:root {
+  // Dark + Neon Colors
+  --color-bg:             #09090B;
+  --color-surface:        #14141F;
+  --color-surface-hover:  #1D1D2E;
+  --color-primary:        #7C3AED; // Violet
+  --color-secondary:      #06B6D4; // Cyan
+  --color-accent:         #00FFA3; // Neon Green
+  --color-pink:           #FF4D8D; // Neon Pink
+  --color-warning:        #FFB800; // Amber
+  --color-text:           #FFFFFF;
+  --color-text-muted:     #B8B8C7;
+  --color-border:         rgba(255, 255, 255, 0.08);
+  --color-border-glow:    rgba(124, 58, 237, 0.15);
+  --color-error:          #FF4D4D;
+
+  // Radii
+  --radius-sm:  8px;
+  --radius-md:  12px;
+  --radius-lg:  20px;
+  --radius-xl:  32px;
+
+  // Glassmorphism & Effects
+  --glass-bg:           rgba(20, 20, 31, 0.65);
+  --glass-border:       rgba(255, 255, 255, 0.06);
+  --glass-blur:         blur(20px);
+  --shadow-glow:        0 0 25px rgba(124, 58, 237, 0.35);
+  --shadow-glow-cyan:   0 0 25px rgba(6, 182, 212, 0.35);
+  --shadow-glow-green:  0 0 25px rgba(0, 255, 163, 0.35);
+  --shadow-premium:     0 20px 40px -15px rgba(0, 0, 0, 0.7);
+
+  --transition: 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
+// Reset & Base Layout
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body, #root {
+  height: 100%;
+  width: 100%;
+  background-color: var(--color-bg);
+  overflow-x: hidden;
+}
+
+body {
+  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  color: var(--color-text);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, h4, h5, h6, .brand-font {
+  font-family: 'Space Grotesk', sans-serif;
+  letter-spacing: -0.02em;
+}
+
+// Sleek Rounded Custom Scrollbars
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 99px;
+  transition: background var(--transition);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-primary);
+}
+
+// Global Focus styling
+:focus-visible {
+  outline: 2px solid var(--color-secondary);
+  outline-offset: 2px;
+}
+
+// Global gradient background meshes
+.gradient-mesh {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  overflow: hidden;
+  background-color: var(--color-bg);
+  pointer-events: none;
+
+  &::before, &::after {
+    content: '';
+    position: absolute;
+    width: 60vw;
+    height: 60vw;
+    border-radius: 50%;
+    filter: blur(140px);
+    opacity: 0.15;
+    mix-blend-mode: screen;
+  }
+
+  &::before {
+    background: radial-gradient(circle, var(--color-primary) 0%, transparent 70%);
+    top: -10vw;
+    right: -10vw;
+    animation: pulse-glow 8s infinite alternate ease-in-out;
+  }
+
+  &::after {
+    background: radial-gradient(circle, var(--color-secondary) 0%, transparent 70%);
+    bottom: -10vw;
+    left: -10vw;
+    animation: pulse-glow 12s infinite alternate-reverse ease-in-out;
+  }
+}
+
+@keyframes pulse-glow {
+  0% { transform: scale(1) translate(0, 0); opacity: 0.12; }
+  100% { transform: scale(1.15) translate(3vw, -2vw); opacity: 0.18; }
+}

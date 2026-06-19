@@ -1,0 +1,219 @@
+// ============================================================
+// Left Panel — About Moodify
+// ============================================================
+
+.left-panel {
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-lg);
+  padding: 1.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  box-shadow: var(--shadow-premium);
+  position: relative;
+  overflow: hidden;
+
+  // Futuristic diagonal corner line or ambient top-left glow
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 80px;
+    height: 80px;
+    background: radial-gradient(circle, rgba(124, 58, 237, 0.15) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  @media (min-width: 1025px) {
+    height: 100%;
+  }
+
+  &__brand {
+    display: flex;
+    align-items: center;
+    gap: 0.875rem;
+  }
+
+  &__logo {
+    width: 44px;
+    height: 44px;
+    background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    flex-shrink: 0;
+    box-shadow: 0 8px 20px -6px var(--color-primary);
+
+    svg {
+      width: 22px;
+      height: 22px;
+    }
+  }
+
+  &__brand-text {
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__app-name {
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: var(--color-text);
+    line-height: 1.1;
+    letter-spacing: -0.03em;
+    background: linear-gradient(to right, #fff, var(--color-text-muted));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  &__version {
+    font-size: 0.6875rem;
+    font-weight: 700;
+    color: var(--color-secondary);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-top: 0.15rem;
+  }
+
+  // System Status Pill
+  &__status {
+    align-self: flex-start;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.35rem 0.75rem;
+    background: rgba(0, 255, 163, 0.06);
+    border: 1px solid rgba(0, 255, 163, 0.15);
+    border-radius: 99px;
+
+    .status-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background-color: var(--color-accent);
+      box-shadow: 0 0 10px var(--color-accent);
+      animation: status-pulse 1.8s infinite ease-in-out;
+    }
+
+    .status-text {
+      font-size: 0.6875rem;
+      font-weight: 700;
+      color: var(--color-accent);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+  }
+
+  &__description {
+    font-size: 0.875rem;
+    line-height: 1.65;
+    color: var(--color-text-muted);
+
+    strong {
+      color: #fff;
+      font-weight: 600;
+    }
+  }
+
+  // Specifications panel items
+  &__specs {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+
+    .spec-item {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.75rem 1rem;
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.04);
+      border-radius: var(--radius-md);
+      transition: background var(--transition), border-color var(--transition);
+
+      &:hover {
+        background: rgba(255, 255, 255, 0.04);
+        border-color: rgba(255, 255, 255, 0.08);
+      }
+
+      .spec-icon {
+        width: 32px;
+        height: 32px;
+        background: rgba(124, 58, 237, 0.1);
+        border: 1px solid rgba(124, 58, 237, 0.2);
+        border-radius: var(--radius-sm);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--color-primary);
+      }
+
+      .spec-info {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .spec-label {
+        font-size: 0.65rem;
+        font-weight: 600;
+        color: var(--color-text-muted);
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+      }
+
+      .spec-val {
+        font-size: 0.8125rem;
+        font-weight: 500;
+        color: #fff;
+      }
+    }
+  }
+
+  // Premium credit box
+  &__credit {
+    margin-top: auto;
+    padding-top: 1.25rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+
+    .credit-label {
+      font-size: 0.625rem;
+      font-weight: 800;
+      color: var(--color-text-muted);
+      letter-spacing: 0.1em;
+      margin-bottom: 0.25rem;
+    }
+
+    .credit-name {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #fff;
+      background: linear-gradient(135deg, #fff, var(--color-secondary));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .credit-title {
+      font-size: 0.75rem;
+      color: var(--color-text-muted);
+      margin-top: 0.1rem;
+    }
+  }
+}
+
+@keyframes status-pulse {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.4;
+    transform: scale(0.8);
+  }
+}
