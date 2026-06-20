@@ -4,14 +4,14 @@ import '../style/faceExpression.scss'
 import Video from "../components/Video";
 import RightSideBox from "../../MoodifySongs/pages/RightSideBox";
 import LeftSideBox from "../../MoodifySongs/pages/LeftSideBox";
+import Navbar from "../components/NavBar";
 
 const FaceExpression = () => {
- const [emotion, setEmotion] = useState("Detecting...");
- console.log(emotion);
+ const [emotion, setEmotion] = useState("");
  
     return (
         <main >
-            <div className="navbar"><LogoutButton /></div>
+            <Navbar/>
             <div className="content-container">
                <LeftSideBox/>
                 <Video emotion={emotion} setEmotion={setEmotion}/>

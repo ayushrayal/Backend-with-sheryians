@@ -2,7 +2,7 @@ import { useState } from "react";
 import {useAuth} from "../hook/useAuth";
 import { useNavigate } from "react-router";
 import toast from "react-hot-toast";
-import '../style/formPage.scss'
+import '../style/register.scss'
 const Register = () => {
     const [username, setUsername] = useState("");
     const [email, setEmail] = useState("");

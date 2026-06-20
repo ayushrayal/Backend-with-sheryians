@@ -72,7 +72,7 @@ const detectEmotion = (blendshapes) => {
 };
 
 
-export const initialize = async ({ videoRef, faceLandmarkerRef, setEmotion }) => {
+export const initializeCamera = async ({ videoRef, faceLandmarkerRef, setEmotion }) => {
     const stream = await navigator.mediaDevices.getUserMedia({
         video: true,
     });

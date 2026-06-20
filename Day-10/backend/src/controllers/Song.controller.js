@@ -9,10 +9,6 @@ const getSongController = async (req, res) => {
             return res.status(400).json({ message: "Mood is required" });
         }
 
-        console.log("mood", mood);
-
-
-
         const token = await getSpotifyToken();
 
         const moodMap = {
@@ -22,9 +18,10 @@ const getSongController = async (req, res) => {
             neutral: "latest hindi songs",
             surprised: "Yo Yo Honey Singh"
         };
-        // Search query ko thoda specific banate hain taaki API confuse na ho
-        const searchQuery = moodMap[mood?.toLowerCase()] || "top%20hits";
-        console.log("searchQuery", searchQuery);
+        const cleanMood = mood?.replace(/[^\w\s]/g, "").trim().toLowerCase();
+
+        const searchQuery = moodMap[cleanMood?.toLowerCase()] || "top%20hits";
+        // console.log("searchQuery", searchQuery);
 
         const spotifyResponse = await axios.get(
             "https://api.spotify.com/v1/search",
@@ -35,8 +32,8 @@ const getSongController = async (req, res) => {
                 params: {
                     q: searchQuery,
                     type: "track",
-                    limit: 10, // Max limit 50 try karein, 20 bhi chalta hai par 50 safe hai
-                    market: "IN" // Apne region ka code daalne se bhi kabhi-kabhi error fix hota hai
+                    limit: 10, 
+                    market: "IN" 
                 }
             }
         );
