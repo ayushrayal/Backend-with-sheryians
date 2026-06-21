@@ -32,8 +32,8 @@ const getSongController = async (req, res) => {
                 params: {
                     q: searchQuery,
                     type: "track",
-                    limit: 10, 
-                    market: "IN" 
+                    limit: 10,
+                    market: "IN"
                 }
             }
         );

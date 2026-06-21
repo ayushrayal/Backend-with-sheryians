@@ -26,9 +26,9 @@ const RightSideBox = ({ emotion }) => {
 
   return (
     <div className="RightSideBox">
-     <div className="heading">
-       <h1>{emotion} Songs</h1>
-     </div>
+      <div className="heading">
+        <h1>{emotion} Songs</h1>
+      </div>
 
       <div className="songsContainer">
         {emotion && songs.map((song) => (
@@ -41,7 +41,7 @@ const RightSideBox = ({ emotion }) => {
               <div className="albumName">{song.album}</div>
             </div>
 
-            <div className="playBtn">▶<a href={song.spotifyUrl}></a></div>
+            <div className="playBtn"><a href={song.spotifyUrl} target="_blank" rel="noopener noreferrer">🎵</a></div>
           </div>
         ))}
       </div>

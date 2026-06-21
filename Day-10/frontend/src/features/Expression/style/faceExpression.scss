@@ -1,46 +1,51 @@
-main{
-    height: 100%;
-    width: 100%;
-    .content-container{
-        height: 90vh;
-        display: grid;
-        grid-template-columns: 1fr 1fr 1fr;
-        grid-template-rows: 1fr;
-    }
+main {
+  height: 100%;
+  width: 100%;
+
+  .content-container {
+    height: 90vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 1fr;
+  }
 }
 
-.face-expression-container{
-    background-color: #181818;
-    border-left: .0000000001rem solid rgba(93, 93, 93, 0.30);
-    border-right: .0000000001rem solid rgb(93, 93, 93, 0.30);
-    padding: 10px;
-    h2{
-        text-align: center;
-    }
-    .mood{
-        margin: 5px;
-        height: 15vh;
-        // background-color: #e30808;
-        width: 100%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        flex-direction: column;
-        gap: 1rem;
-        h1{
-            height: 8vh;
-            background-color: #181818;
-            width: 80%;
-            text-align: center;
-            border: .0000000001rem solid rgb(93, 93, 93, 0.30);
-        }
-        button{
-            background-color: #242424;
-            border: .0000000001rem solid rgb(93, 93, 93, 0.30);
-            color: white;
-            padding: 1rem;
-        }
+.face-expression-container {
+  background-color: #181818;
+  border-left: .0000000001rem solid rgba(93, 93, 93, 0.30);
+  border-right: .0000000001rem solid rgb(93, 93, 93, 0.30);
+  padding: 10px;
+
+  h2 {
+    text-align: center;
+  }
+
+  .mood {
+    margin: 5px;
+    height: 15vh;
+    // background-color: #e30808;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 1rem;
+
+    h1 {
+      height: 8vh;
+      background-color: #181818;
+      width: 80%;
+      text-align: center;
+      border: .0000000001rem solid rgb(93, 93, 93, 0.30);
     }
 
-   
+    button {
+      background-color: #242424;
+      border: .0000000001rem solid rgb(93, 93, 93, 0.30);
+      color: white;
+      padding: 1rem;
+    }
+  }
+
+
 }

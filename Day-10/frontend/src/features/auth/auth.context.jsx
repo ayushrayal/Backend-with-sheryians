@@ -1,62 +1,62 @@
-import{handleLogin,handleRegister,handleLogout,handleGetme} from "./services/auth.service.js";
+import { handleLogin, handleRegister, handleLogout, handleGetme } from "./services/auth.service.js";
 import { createContext, useEffect, useState } from "react";
 
 export const AuthContext = createContext();
 
-export const AuthProvider = ({children})=>{
-    const [user,setUser] = useState(null);
-    const [loading,setLoading] = useState(true);
+export const AuthProvider = ({ children }) => {
+    const [user, setUser] = useState(null);
+    const [loading, setLoading] = useState(true);
 
-    const register = async(username,email,password)=>{
-        try{
+    const register = async (username, email, password) => {
+        try {
             setLoading(true)
-            const response = await handleRegister(username,email,password)
+            const response = await handleRegister(username, email, password)
             return response
             setLoading(false)
-        }catch(err){
+        } catch (err) {
             console.error("Registration failed:", err.response?.data?.message || err.message);
             throw err
         }
     }
 
-    const login = async (identifier,password)=>{
-        try{
+    const login = async (identifier, password) => {
+        try {
             setLoading(true)
-            const response = await handleLogin(identifier,password)
+            const response = await handleLogin(identifier, password)
             setUser(response.data)
             setLoading(false)
-        }catch(err){
+        } catch (err) {
             console.error("Login failed:", err.response?.data?.message || err.message);
             throw err;
         }
     }
 
-    const getMe = async()=>{
-        try{
+    const getMe = async () => {
+        try {
             setLoading(true)
             const response = await handleGetme()
             setUser(response.data)
             setLoading(false)
-        }catch(err){
+        } catch (err) {
             console.error("GetMe failed:", err.response?.data?.message || err.message);
             throw err
         }
     }
 
-    const logout = async()=>{
-        try{
+    const logout = async () => {
+        try {
             setLoading(true)
             const response = await handleLogout()
             setUser(null)
             setLoading(false)
-        } catch(err){
+        } catch (err) {
             console.error("Logout failed:", err.response?.data?.message || err.message);
             throw err;
         }
     }
-    useEffect(()=>{
-getMe()
-    },[])
+    useEffect(() => {
+        getMe()
+    }, [])
     return (
         <AuthContext.Provider value={{ user, login, register, logout, getMe, loading }}>
             {children}

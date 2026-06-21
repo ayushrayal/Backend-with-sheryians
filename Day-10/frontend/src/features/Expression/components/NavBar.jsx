@@ -21,15 +21,15 @@ const Navbar = () => {
     const username = user?.user?.username || "";
     const email = user?.user?.email || "";
     return (
-<nav>
-    <div className="leftside">Moodify</div>
-    <div className="rightside">
-        <div className="userdetails">
-        <h1>{user.user.username}</h1>
-        <h5>{user.user.email}</h5>
-        </div><LogoutButton/></div>
+        <nav>
+            <div className="leftside">Moodify</div>
+            <div className="rightside">
+                <div className="userdetails">
+                    <h1>{user.user.username}</h1>
+                    <h5>{user.user.email}</h5>
+                </div><LogoutButton /></div>
 
-</nav>
+        </nav>
     );
 };
 

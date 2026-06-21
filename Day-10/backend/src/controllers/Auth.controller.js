@@ -1,10 +1,10 @@
 const userModel = require("../model/User.model");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken")
-const {redisClient} = require("../config/Cache")
- const blackListModel = require("../model/BlackList.model");
- 
- const registerController = async (req, res) => {
+const { redisClient } = require("../config/Cache")
+const blackListModel = require("../model/BlackList.model");
+
+const registerController = async (req, res) => {
     try {
         const { username, email, password } = req.body;
         const userExist = await userModel.findOne({
@@ -23,27 +23,28 @@ const {redisClient} = require("../config/Cache")
             password: hashPassword
         });
         const Token = jwt.sign({
-            id:user._id
+            id: user._id
         },
-        process.env.JWT_KEY,{
-            expiresIn:"7d"
+            process.env.JWT_KEY, {
+            expiresIn: "7d"
         }
-    )
-    res.cookie("Token",Token)
+        )
+        res.cookie("Token", Token)
         res.status(201).json({
             message: "User Created Successfully!",
             user: { id: user._id, username: user.username, email: user.email },
             Token
         });
     } catch (error) {
-        res.status(500).json({ message: "Internal Server Error", error: error.message,
-             stack: error.stack
-         });
+        res.status(500).json({
+            message: "Internal Server Error", error: error.message,
+            stack: error.stack
+        });
 
     }
 }
 
- const loginController = async (req, res) => {
+const loginController = async (req, res) => {
     try {
         const { identifier, password } = req.body;
 
@@ -59,7 +60,7 @@ const {redisClient} = require("../config/Cache")
                 message: "Invalid credentials"
             });
         }
-        
+
         const isMatch = await bcrypt.compare(
             password,
             user.password
@@ -93,7 +94,7 @@ const {redisClient} = require("../config/Cache")
             },
             Token
         });
-        
+
 
     } catch (error) {
         return res.status(500).json({
@@ -105,20 +106,20 @@ const {redisClient} = require("../config/Cache")
 }
 
 const getProfileController = async (req, res) => {
-    try{
+    try {
         const userID = req.user.id;
         const user = await userModel.findById(userID)
-        if(!user){
+        if (!user) {
             return res.status(404).json({
-                message:"User not found"
+                message: "User not found"
             })
         }
-        
+
         res.status(200).json({
-            message:"User profile fetched successfully",
+            message: "User profile fetched successfully",
             user
         })
-    }catch(err){
+    } catch (err) {
         throw err
     }
 }
@@ -128,9 +129,9 @@ const logoutController = async (req, res) => {
     if (!Token) {
         return res.status(400).json({ message: "No token provided" });
     }
-    
+
     try {
-        await redisClient.set(Token,"blackListed","EX",60*60)
+        await redisClient.set(Token, "blackListed", "EX", 60 * 60)
         res.clearCookie("Token");
         res.status(200).json({ message: "Logout successful" });
     } catch (error) {
@@ -138,4 +139,4 @@ const logoutController = async (req, res) => {
     }
 }
 
-module.exports = { registerController, loginController, getProfileController, logoutController};
+module.exports = { registerController, loginController, getProfileController, logoutController };

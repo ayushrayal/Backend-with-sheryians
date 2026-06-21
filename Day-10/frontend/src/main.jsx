@@ -1,6 +1,6 @@
 import { createRoot } from 'react-dom/client'
-import {BrowserRouter} from 'react-router'
-import {AuthProvider} from './features/auth/auth.context.jsx'
+import { BrowserRouter } from 'react-router'
+import { AuthProvider } from './features/auth/auth.context.jsx'
 import { Toaster } from "react-hot-toast";
 import App from './App.jsx'
 import './index.scss'
@@ -9,7 +9,7 @@ createRoot(document.getElementById('root')).render(
   <BrowserRouter>
     <AuthProvider>
       <SongProvider> <App />
-      <Toaster position="bottom-right" reverseOrder={false} />
+        <Toaster position="bottom-right" reverseOrder={false} />
       </SongProvider>
     </AuthProvider>
   </BrowserRouter>
